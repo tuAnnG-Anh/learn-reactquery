@@ -5,7 +5,7 @@ import AddStudent from 'pages/AddStudent'
 import Dashboard from 'pages/Dashboard'
 import NotFound from 'pages/NotFound'
 import Students from 'pages/Students'
-import { useIsFetching, useIsMutating } from 'react-query'
+import { setLogger, useIsFetching, useIsMutating } from 'react-query'
 import { useRoutes } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -38,8 +38,6 @@ function App() {
   ])
   const isFetching = useIsFetching()
   const isMutating = useIsMutating()
-  console.log(isFetching, isMutating)
-
   return (
     <div className='App'>
       {isFetching + isMutating !== 0 && <Spinner />}
