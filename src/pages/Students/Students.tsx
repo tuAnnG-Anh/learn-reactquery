@@ -9,16 +9,16 @@ export default function Students() {
     page?: string
   } = useQueryString()
   const page = Number(queryString?.page) || 1
+
   //use signal react query to cancel call api with axios
   const studentQuery = useQuery(
     ['student', page],
-    ({ signal }) => {
+    () => {
       //cancel after 5 second
       // const controller = new AbortController()
       // setTimeout(() => controller.abort, 5000)
       // return getStudents(page, LIMIT, controller.signal)
-
-      return getStudents(page, LIMIT, signal)
+      return getStudents(page, LIMIT)
     },
     {
       // cacheTime: 1000 * 5 * 60, default 5 minutes
@@ -44,12 +44,13 @@ export default function Students() {
     })
     // console.log();
   }
-  const refetchStudent = () => {
-    studentQuery.refetch()
-  }
-  const cancelRefetchStudent = () => {
-    queryClient.cancelQueries(['student', page])
-  }
+  // const refetchStudent = () => {
+  //   studentQuery.refetch()
+  // }
+  // const cancelRefetchStudent = () => {
+  //   queryClient.cancelQueries(['student', page])
+  // }
+
   const totalStudent = Number(studentQuery.data?.headers['x-total-count']) || 0
   const totalPage = Math.ceil(totalStudent / LIMIT)
   return (
@@ -63,7 +64,7 @@ export default function Students() {
         >
           Add student
         </Link>
-        <button onClick={refetchStudent}>Refresh student</button>
+        {/* <button onClick={refetchStudent}>Refresh student</button> */}
       </div>
       {studentQuery.isLoading && (
         <div role='status' className='mt-6 animate-pulse'>

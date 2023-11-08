@@ -1,13 +1,12 @@
 import { IStudent, IStudents } from 'interfaces/student'
 import { studentHttp } from 'utils/studentHttp'
 
-export const getStudents = (page: number | string, limit: number | string, signal?: AbortSignal) =>
+export const getStudents = (page: number | string, limit: number | string) =>
   studentHttp.get<IStudents>('students', {
     params: {
       _page: page,
       _limit: limit
-    },
-    signal
+    }
   })
 export const addStudent = (student: Omit<IStudent, 'id'>) => studentHttp.post<IStudent>('students', student)
 export const getStudentById = (id: number | string) => studentHttp.get<IStudent>(`students/${id}`)

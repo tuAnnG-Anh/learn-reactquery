@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { addStudent, getStudentById, updateStudent } from 'api/student'
 import { IStudent } from 'interfaces/student'
 import { useEffect, useMemo, useState } from 'react'
-import { isAxiosError } from 'utils/utils'
+// import { isAxiosError } from 'utils/utils'
 import { toast } from 'react-toastify'
 
 type FormStateType = Omit<IStudent, 'id'> | IStudent
@@ -17,11 +17,11 @@ const initialFormState: FormStateType = {
   last_name: ''
 }
 const gender = { male: 'male', female: 'female', other: 'other' }
-type formError =
-  | {
-      [key in keyof FormStateType]: string
-    }
-  | null
+// type formError =
+//   | {
+//       [key in keyof FormStateType]: string
+//     }
+//   | null
 export default function AddStudent() {
   const queryClient = useQueryClient()
   const addMatch = useMatch('/students/add')
@@ -29,7 +29,7 @@ export default function AddStudent() {
   const { id } = useParams()
   const [formState, setFormState] = useState<FormStateType>(initialFormState)
   const addStudentMutation = useMutation((body: FormStateType) => addStudent(body))
-  const queryStudent = useQuery(['student', Number(id)], () => getStudentById(Number(id)), {
+  const queryStudent = useQuery(['student', id], () => getStudentById(id as string), {
     enabled: id !== undefined,
     staleTime: 1000 * 10
   })
@@ -40,17 +40,17 @@ export default function AddStudent() {
 
   const updateStudentMutation = useMutation((_) => updateStudent(id as string, formState as IStudent), {
     onSuccess(data) {
-      queryClient.setQueryData(['student', Number(id)], data)
+      queryClient.setQueryData(['student', id], data)
     }
   })
 
-  const errorForm: formError = useMemo(() => {
-    const errorMutation = isAddMode ? addStudentMutation.error : updateStudentMutation.error
-    if (isAxiosError<{ error: formError }>(errorMutation) && errorMutation.response?.status === 422)
-      return errorMutation.response?.data.error
-    return null
-  }, [addStudentMutation.error, isAddMode, updateStudentMutation.error])
-  //use currying
+  // const errorForm: formError = useMemo(() => {
+  //   const errorMutation = isAddMode ? addStudentMutation.error : updateStudentMutation.error
+  //   if (isAxiosError<{ error: formError }>(errorMutation) && errorMutation.response?.status === 422)
+  //     return errorMutation.response?.data.error
+  //   return null
+  // }, [addStudentMutation.error, isAddMode, updateStudentMutation.error])
+  // //use currying
 
   const handleChange = (value: keyof FormStateType) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormState((prev) => ({ ...prev, [value]: e.target.value }))
@@ -80,7 +80,7 @@ export default function AddStudent() {
       <form className='mt-6' onSubmit={(e) => handleSubmit(e)}>
         <div className='group relative z-0 mb-6 w-full'>
           <input
-            // type='email'
+            type='email'
             name='floating_email'
             id='floating_email'
             className='peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent py-2.5 px-0 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 '
@@ -95,7 +95,7 @@ export default function AddStudent() {
           >
             Email address
           </label>
-          {errorForm && <span>Invalid email!</span>}
+          {/* {errorForm && <span>Invalid email!</span>} */}
         </div>
 
         <div className='group relative z-0 mb-6 w-full'>
