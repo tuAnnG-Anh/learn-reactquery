@@ -5,6 +5,8 @@ import { useQueryString } from 'utils/utils'
 import { toast } from 'react-toastify'
 const LIMIT = 10
 export default function Students() {
+  const queryClient = useQueryClient()
+
   const queryString: {
     page?: string
   } = useQueryString()
@@ -24,10 +26,11 @@ export default function Students() {
       // cacheTime: 1000 * 5 * 60, default 5 minutes
       // retry: 0, //try fetch 0 time
       staleTime: 1000 * 60,
-      keepPreviousData: true
+      keepPreviousData: true,
+      retry: 0
     }
   )
-  const queryClient = useQueryClient()
+  console.log(studentQuery.data?.data)
 
   const deleteStudentMutation = useMutation((id: number | string) => deleteStudent(id), {
     onSuccess: () => {
@@ -38,12 +41,12 @@ export default function Students() {
   const handleDelete = (id: number) => {
     deleteStudentMutation.mutate(id)
   }
-  const handleHoverStudent = (id: number) => {
-    queryClient.prefetchQuery(['student', id], () => getStudentById(id), {
-      staleTime: 1000 * 10
-    })
-    // console.log();
-  }
+  // const handleHoverStudent = (id: number) => {
+  //   queryClient.prefetchQuery(['student', id], () => getStudentById(id), {
+  //     staleTime: 1000 * 10
+  //   })
+  //   // console.log();
+  // }
   // const refetchStudent = () => {
   //   studentQuery.refetch()
   // }
@@ -112,7 +115,7 @@ export default function Students() {
                   <tr
                     key={student.id}
                     className='border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600'
-                    onMouseEnter={() => handleHoverStudent(student.id)}
+                    // onMouseEnter={() => handleHoverStudent(student.id)}
                   >
                     <td className='py-4 px-6'>{student.id}</td>
                     <td className='py-4 px-6'>
