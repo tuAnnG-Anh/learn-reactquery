@@ -6,6 +6,7 @@ import { toast } from 'react-toastify'
 const LIMIT = 10
 export default function Students() {
   const queryClient = useQueryClient()
+  console.log(process.env.REACT_APP_API)
 
   const queryString: {
     page?: string
@@ -31,7 +32,6 @@ export default function Students() {
     }
   )
   console.log(studentQuery.data?.data)
-
   const deleteStudentMutation = useMutation((id: number | string) => deleteStudent(id), {
     onSuccess: () => {
       toast.success('Delete success!')
