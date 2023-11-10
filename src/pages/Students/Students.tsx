@@ -7,7 +7,6 @@ const LIMIT = 10
 export default function Students() {
   const queryClient = useQueryClient()
   console.log(process.env.REACT_APP_API)
-
   const queryString: {
     page?: string
   } = useQueryString()

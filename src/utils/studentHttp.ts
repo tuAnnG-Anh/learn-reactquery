@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export const studentHttp = axios.create({
-  baseURL: 'https://test-9lwd.onrender.com/',
+  baseURL: process.env.REACT_APP_API,
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json'
